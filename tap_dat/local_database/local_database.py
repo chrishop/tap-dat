@@ -5,7 +5,7 @@ from statements import Statements
 # TODO make this even dumber and put the logic infront of it, to make
 # to make logic more testable.
 
-class LocalDatabaseWrapper:
+class LocalDatabase:
     
     def __init__(self, the_host, the_username, the_password):
         self.database = mysql.connector.connect(
