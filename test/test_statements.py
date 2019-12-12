@@ -1,5 +1,5 @@
 import unittest
-from tap_dat.local_database.statements import Statements
+from tap_dat.statements import Statements
 
 class TestStatementGenerator(unittest.TestCase):
     
