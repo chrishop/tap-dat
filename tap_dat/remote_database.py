@@ -8,7 +8,7 @@ gets table details from database
 """
 
 from astroquery.utils.tap import TapPlus
-from astropy.table import Table
+from numpy.ma.core import MaskedConstant
 from typing import List
 
 class RemoteDatabase:
@@ -19,9 +19,27 @@ class RemoteDatabase:
     def query(self, adql_query: str) -> List[dict]:
         job = self.client.launch_job_async(adql_query)
         job.wait_for_job_end()
-        return RemoteDatabase.table_to_dict(job.get_results())
+        return RemoteDatabase.__table_to_dicts(job.get_results())
     
     @staticmethod
-    def table_to_dict(table) -> List[dict]:
-        return list(map(lambda row: dict(zip(table.colnames, row)), table))
-    
+    def __table_to_dicts(table) -> List[dict]:
+        return list(
+            map(
+               lambda row: RemoteDatabase.__row_to_dict(table.colnames, row),
+               table 
+            )
+        )
+
+    @staticmethod
+    def __row_to_dict(column_names, row):
+        return dict(zip(column_names, RemoteDatabase.__unmask_row(row)))
+
+    @staticmethod
+    def __unmask_row(row):
+        return list(map(RemoteDatabase.__unmask_item, row))
+
+    @staticmethod
+    def __unmask_item(item):
+        if isinstance(item, str) and item == '': return 'NULL'
+        if isinstance(item, MaskedConstant): return 'NULL'
+        return item
