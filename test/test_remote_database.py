@@ -10,8 +10,6 @@ class TestRemoteDatabase(unittest.TestCase):
         self.skymapper = RemoteDatabase('http://api.skymapper.nci.org.au/public/tap')
 
     def test_query_with_table_data(self):
-
-
         result = self.skymapper.query('SELECT object_id, raj2000, dej2000, apass_dist \
                                   FROM dr1.master WHERE object_id=1')
 
@@ -23,7 +21,6 @@ class TestRemoteDatabase(unittest.TestCase):
         self.assertEqual(result,expected)
 
     def test_query_with_schema_data(self):
-
         result = self.skymapper.query("SELECT column_name, column_order, description, unit \
                                     FROM TAP_SCHEMA.columns \
                                     WHERE table_name='dr1.master' \
