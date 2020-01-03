@@ -18,7 +18,7 @@ class LocalDatabase:
         self.cursor = self.database.cursor()
     
     def create_table(self, table_name: str, columns: List[dict]):
-        """columns, a list of dicts, each dict contains a 'name' and 'type'"""
+        """columns, a list of dicts, each dict contains a 'column_name' and 'datatype'"""
         self.cursor.execute(Statements.create(table_name, columns))
       
     def insert(self, table_name: str, row: dict):

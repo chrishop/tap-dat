@@ -4,15 +4,16 @@ from tap_dat.local_database import LocalDatabase
 
 class TestLocalDatabase(unittest.TestCase):
     
-    table_spec = [  { 'name': 'string_column', 'type': 'CHAR(255)' },
-                    { 'name': 'variable_string_column', 'type': 'VARCHAR(255)'},
-                    { 'name': 'integer_column', 'type': 'INTEGER'},
-                    { 'name': 'smallint_column', 'type': 'SMALLINT'},
-                    { 'name': 'bigint_column', 'type': 'BIGINT'},
-                    { 'name': 'double_column', 'type': 'DOUBLE'},
-                    { 'name': 'real_column', 'type': 'REAL'}]
+    table_spec = [  { 'column_name': 'string_column', 'datatype': 'CHAR(255)' },
+                    { 'column_name': 'variable_string_column', 'datatype': 'VARCHAR(255)'},
+                    { 'column_name': 'integer_column', 'datatype': 'INTEGER'},
+                    { 'column_name': 'smallint_column', 'datatype': 'SMALLINT'},
+                    { 'column_name': 'bigint_column', 'datatype': 'BIGINT'},
+                    { 'column_name': 'double_column', 'datatype': 'DOUBLE'},
+                    { 'column_name': 'real_column', 'datatype': 'REAL'}]
     
     def setUp(self):
+        #TODO fetch these from a config not hard coded
         self.db = LocalDatabase('localhost','root','26Selsey', 'tap_dat_test')
         self.db.create_table('test_table', self.table_spec)
         

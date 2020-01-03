@@ -16,7 +16,7 @@ class Statements:
     
     @staticmethod
     def __generate_name_type_string(columns: List[dict]) -> str:
-        return ",".join(list(map(lambda x: f"{x['name']} {x['type']}", columns)))
+        return ",".join(list(map(lambda x: f"{x['column_name']} {x['datatype']}", columns)))
     
     @staticmethod
     def __comma_separate(columns_names: List[str]) -> str:

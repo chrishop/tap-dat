@@ -5,6 +5,7 @@ import numpy as np
 class TestRemoteDatabase(unittest.TestCase):
     
     # more of an intergration test
+    #TODO could mock out the responses then make separate integration tests
 
     def setUp(self):
         self.skymapper = RemoteDatabase('http://api.skymapper.nci.org.au/public/tap')
