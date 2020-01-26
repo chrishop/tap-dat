@@ -1,6 +1,7 @@
 import unittest
 from tap_dat.remote_database import RemoteDatabase
 import numpy as np
+from numpy.ma.core import MaskedConstant
 
 class TestRemoteDatabase(unittest.TestCase):
     
@@ -12,14 +13,16 @@ class TestRemoteDatabase(unittest.TestCase):
 
     def test_query_with_table_data(self):
         result = self.skymapper.query('SELECT object_id, raj2000, dej2000, apass_dist \
-                                  FROM dr1.master WHERE object_id=1')
+                                  FROM dr1.master WHERE object_id=1')[0]
 
         expected = [{ 'object_id': 1,
                       'raj2000': 315.001047, 
-                      'dej2000': -35.252904, 
-                      'apass_dist': 'NULL'}]
+                      'dej2000': -35.252904}]
 
-        self.assertEqual(result,expected)
+        self.assertEqual(result['object_id'], 1)
+        self.assertEqual(result['raj2000'], 315.001047)
+        self.assertEqual(result['dej2000'], -35.252904)
+        self.assertEqual(isinstance(result['apass_dist'], MaskedConstant), True)
 
     def test_query_with_schema_data(self):
         result = self.skymapper.query("SELECT column_name, column_order, description, unit \
@@ -31,7 +34,7 @@ class TestRemoteDatabase(unittest.TestCase):
         expected = [{ 'column_name': 'object_id',
                       'column_order': 1,
                       'description': 'Global unique object ID in the master table.',
-                      'unit': 'NULL'}]
+                      'unit': ''}]
 
         self.assertEqual(result,expected)
 

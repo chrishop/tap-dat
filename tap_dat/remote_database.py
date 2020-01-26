@@ -18,12 +18,15 @@ class RemoteDatabase:
         
     def get_batch(self, table_name: str, id_name: str,
                   min: int, max: int, columns='*') -> List[dict]:
+        # could move these to statements
         return self.query(f"SELECT {columns} FROM {table_name} \
                            WHERE {id_name}>={min} \
                            AND {id_name}<{max} \
                            ORDER BY {id_name}")
 
+    # TODO columns should be a list
     def get_schema(self, table_name, columns="*"):
+        # could move this to statements
         return self.query(f"SELECT {columns} \
                     FROM TAP_SCHEMA.columns \
                     WHERE table_name='{table_name}' \
@@ -45,14 +48,4 @@ class RemoteDatabase:
 
     @staticmethod
     def __row_to_dict(column_names, row):
-        return dict(zip(column_names, RemoteDatabase.__unmask_row(row)))
-
-    @staticmethod
-    def __unmask_row(row):
-        return list(map(RemoteDatabase.__unmask_item, row))
-
-    @staticmethod
-    def __unmask_item(item):
-        if isinstance(item, str) and item == '': return 'NULL'
-        if isinstance(item, MaskedConstant): return 'NULL'
-        return item
+        return dict(zip(column_names, row))
