@@ -11,10 +11,10 @@ class TestDownloadManager(unittest.TestCase):
             'http://api.skymapper.nci.org.au/public/tap',
             'dr1.master',
             'object_id',
-            0, 50, 10
+            1, 50, 10
         )
         
-        expected = [[0, 10], [10, 20], [20, 30], [30, 40], [40, 50]]
+        expected = [[1, 10], [11, 20], [21, 30], [31, 40], [41, 50]]
         
         self.assertEqual(dm.query_queue, expected)
      
@@ -24,7 +24,37 @@ class TestDownloadManager(unittest.TestCase):
             'http://api.skymapper.nci.org.au/public/tap',
             'dr1.master',
             'object_id',
-            0, 50, 10
+            1, 10, 10
         )
-        
-        
+
+        result = dm.next()
+        no_more_results = dm.next()
+
+        self.assertEqual(len(result), 10)
+        self.assertEqual(result[0]['object_id'], 1)
+        self.assertEqual(result[9]['object_id'], 10)
+
+        self.assertEqual([], no_more_results)
+
+    def test_multiple_next(self):
+        dm = DownloadManager(
+            'http://api.skymapper.nci.org.au/public/tap',
+            'dr1.master',
+            'object_id',
+            1, 20, 10
+        )
+
+        results = dm.next()
+        more_results = dm.next()
+        no_more_results = dm.next()
+
+        self.assertEqual(len(results), 10)
+        self.assertEqual(results[0]['object_id'], 1)
+        self.assertEqual(results[9]['object_id'], 10)
+
+        self.assertEqual(len(more_results), 10)
+        self.assertEqual(more_results[0]['object_id'], 11)
+        self.assertEqual(more_results[9]['object_id'], 20)
+
+        self.assertEqual(len(more_results), 10)
+        self.assertEqual([], no_more_results)
