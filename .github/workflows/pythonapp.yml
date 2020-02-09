@@ -1,4 +1,4 @@
-name: Python application
+name: python tap-dat application
 
 on: [push]
 
@@ -26,4 +26,5 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with unit test
       run: |
+	pip install -e .
         python -m unittest test/test_*

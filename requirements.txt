@@ -3,4 +3,3 @@ astroquery==0.3.10
 Click==7.0
 mysql-connector-python==8.0.18
 numpy==1.17.4
--e git+git@github.com:chrishop/tap-dat.git
