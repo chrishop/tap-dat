@@ -44,7 +44,7 @@ class TestRemoteDatabase(unittest.TestCase):
         result = self.skymapper.get_schema('dr1.master')
 
     def test_get_batch(self):
-        result = self.skymapper.get_batch('dr1.master', 'object_id', 1, 11, 'object_id')
+        result = self.skymapper.get_batch('dr1.master', 'object_id', 1, 10, 'object_id')
 
         expected = [    {'object_id': 1},
                         {'object_id': 2},

@@ -21,7 +21,7 @@ class RemoteDatabase:
         # could move these to statements
         return self.query(f"SELECT {columns} FROM {table_name} \
                            WHERE {id_name}>={min} \
-                           AND {id_name}<{max} \
+                           AND {id_name}<={max} \
                            ORDER BY {id_name}")
 
     # TODO columns should be a list
