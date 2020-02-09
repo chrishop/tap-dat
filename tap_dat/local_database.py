@@ -26,12 +26,10 @@ class LocalDatabase:
         self.database.commit()
        
     def insert_multiple(self, table_name: str, rows: List[dict]):
-        column_list = list(rows[0].keys()) 
-        self.cursor.executemany(
-            Statements.insert(table_name, column_list),
-            rows
-                                
-        )
+        #TODO this is slow, use execute many when you have time.
+        for row in rows:
+            self.cursor.execute(Statements.insert(table_name, list(row.keys())), row)
+
         self.database.commit()
         
     def drop_table(self, table_name):
