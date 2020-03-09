@@ -10,8 +10,7 @@ class TestDownloadManagerIntegration(unittest.TestCase):
         self.dm = DownloadManager(
             'http://api.skymapper.nci.org.au/public/tap',
             'dr1.master',
-            'object_id',
-            0, 50, 10
+            'object_id'
         )
 
         self.local = LocalDatabase('localhost','root','26Selsey', 'tap_dat_test')
@@ -22,8 +21,8 @@ class TestDownloadManagerIntegration(unittest.TestCase):
 
     def test_single_batch_of_10_put_in_local_database(self):
         download_manager = DownloadManager('http://api.skymapper.nci.org.au/public/tap', 
-                                  'dr1.master', 'object_id', 
-                                  1, 10, 10)
+                                  'dr1.master', 'object_id')
+        download_manager.set_batches(1, 10, 10)
 
         self.local.insert_multiple('dm_integration_test',Transformer.transform(download_manager.next()))
 
@@ -34,8 +33,8 @@ class TestDownloadManagerIntegration(unittest.TestCase):
 
     def test_5_batches_of_10_put_in_local_database(self):
         download_manager = DownloadManager('http://api.skymapper.nci.org.au/public/tap', 
-                                  'dr1.master', 'object_id', 
-                                  1, 50, 10)
+                                  'dr1.master', 'object_id')
+        download_manager.set_batches(1, 50, 10)
         for i in range(10):
             self.local.insert_multiple('dm_integration_test', Transformer.transform(download_manager.next())) # 10 times
 

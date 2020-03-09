@@ -10,9 +10,9 @@ class TestDownloadManager(unittest.TestCase):
         dm = DownloadManager(
             'http://api.skymapper.nci.org.au/public/tap',
             'dr1.master',
-            'object_id',
-            1, 50, 10
+            'object_id'
         )
+        dm.set_batches(1, 50, 10)
         
         expected = [[1, 10], [11, 20], [21, 30], [31, 40], [41, 50]]
         
@@ -23,9 +23,9 @@ class TestDownloadManager(unittest.TestCase):
         dm = DownloadManager(
             'http://api.skymapper.nci.org.au/public/tap',
             'dr1.master',
-            'object_id',
-            1, 10, 10
+            'object_id'
         )
+        dm.set_batches(1, 10, 10)
 
         result = dm.next()
         no_more_results = dm.next()
@@ -40,9 +40,9 @@ class TestDownloadManager(unittest.TestCase):
         dm = DownloadManager(
             'http://api.skymapper.nci.org.au/public/tap',
             'dr1.master',
-            'object_id',
-            1, 20, 10
+            'object_id'
         )
+        dm.set_batches(1, 20, 10)
 
         results = dm.next()
         more_results = dm.next()

@@ -62,6 +62,15 @@ class TestLocalDatabase(unittest.TestCase):
         self.assertEqual(self.db.query('SELECT * FROM test_table'),
                          [('Hello', 'There', 21, 2, 123456, 1.23456, 2.34567),
                           ('General', 'Kenobi', 34, 12, 78901, 78.901, 2535.6837)])
+    
+
+    def test_create_table_with_same_schema_when_one_exists(self):
+        self.db.create_table('test_table', self.table_spec)
             
+    def test_already_exist_where_table_does_exist(self):
+        table_name = "i_dont_exist"
+        self.assertFalse(self.db.already_exists(table_name))
         
-        
+    def test_already_exist(self):
+        table_name = "test_table"
+        self.assertTrue(self.db.already_exists(table_name))
