@@ -1,4 +1,5 @@
 import mysql.connector
+from mysql.connector.errors import ProgrammingError
 from typing import List, Any
 from tap_dat.statements import Statements
 
@@ -19,7 +20,8 @@ class LocalDatabase:
     
     def create_table(self, table_name: str, columns: List[dict]):
         """columns, a list of dicts, each dict contains a 'column_name' and 'datatype'"""
-        self.cursor.execute(Statements.create(table_name, columns))
+        if not self.already_exists(table_name):
+            self.cursor.execute(Statements.create(table_name, columns))
       
     def insert(self, table_name: str, row: dict):
         self.cursor.execute(Statements.insert(table_name, list(row.keys())), row)
@@ -40,4 +42,10 @@ class LocalDatabase:
         self.cursor.execute(query)
         return self.cursor.fetchall()
     
+    def already_exists(self, table_name):
+        try:
+            self.query(f"SELECT * FROM {table_name}")
+            return True
+        except Exception:
+            return False
         
