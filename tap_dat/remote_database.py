@@ -12,10 +12,10 @@ from numpy.ma.core import MaskedConstant
 from typing import List
 
 class RemoteDatabase:
-    
+
     def __init__(self, url: str):
         self.client = TapPlus(url)
-        
+
     def get_batch(self, table_name: str, id_name: str,
                   min: int, max: int, columns='*') -> List[dict]:
         # could move these to statements
@@ -42,7 +42,7 @@ class RemoteDatabase:
         return list(
             map(
                lambda row: RemoteDatabase.__row_to_dict(table.colnames, row),
-               table 
+               table
             )
         )
 
