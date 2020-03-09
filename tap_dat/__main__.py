@@ -1,7 +1,9 @@
 from tap_dat import cli
 
+
 def main():
-    cli.main()
-    
+    cli.cli()
+
+
 if __name__ == "__main__":
     main()
