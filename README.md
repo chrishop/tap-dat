@@ -23,8 +23,29 @@ sudo systemctl enable mysql
 ```
 
 # Usage
+creates sample json config file:
 ```
 tap-dat init
-vim tap-dat.conf (edit the json to have the correct parameters)
+```
+
+You can then edit this config file with a text editor of your choice!
+This is a sample config file that fetches 100 rows in batches of 10 from dr1.master in the skymapper TAP database:
+```
+{
+    "remote_url": "http://api.skymapper.nci.org.au/public/tap",
+    "remote_table": "dr1.master",
+    "remote_table_id": "object_id",
+    "remote_table_id_min": 1,
+    "remote_table_id_max": 100,
+    "download_batch_size": 10,
+    "local_host": "localhost",
+    "local_user": "root",
+    "local_password": "*******",
+    "local_db_name": "tap_dat_test",
+    "local_table_name": "quick_test"
+}
+```
+To initiate the downloading run:
+```
 tap-dat run tap-dat.conf
 ```
