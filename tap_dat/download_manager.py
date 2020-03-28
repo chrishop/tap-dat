@@ -9,7 +9,9 @@ class DownloadManager:
         self.table_name = table_name
         self.id_name = id_name
 
-    def set_batches(self, the_min: int, the_max: int, batch_size: int):
+    def set_batches(self, the_min: float, the_max: float, batch_size: float):
+        if (((the_max - the_min)/ batch_size) % 1) != 0:
+            raise ArithmeticError("batch_size must divide into the range completely")
         self.query_queue = DownloadManager.__make_query_queue(the_min,
                                                               the_max,
                                                               batch_size)
@@ -17,6 +19,12 @@ class DownloadManager:
     def next(self):
         if self.query_queue == []:
             return []
+        if self.query_queue[0][0] == 0:
+            a_min, a_max = self.query_queue.pop(0)
+            return (self.remote.get_rows_by_id(self.table_name, self.id_name, 0) + 
+                    self.remote.get_batch(self.table_name,
+                                            self.id_name,
+                                            a_min, a_max))
         a_min, a_max = self.query_queue.pop(0)
         return self.remote.get_batch(self.table_name,
                                      self.id_name,
@@ -27,10 +35,10 @@ class DownloadManager:
 
     # TODO there should be some functional way of doing this
     @staticmethod
-    def __make_query_queue(the_min: int, the_max: int, batch_size: int):
+    def __make_query_queue(the_min: float, the_max: float, batch_size: float):
         query_queue = []
         row_number = the_min
         while row_number < the_max:
-            query_queue.append([row_number, row_number + (batch_size -1)])
+            query_queue.append([row_number, row_number + batch_size])
             row_number += batch_size
         return query_queue

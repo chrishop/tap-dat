@@ -12,40 +12,6 @@ import traceback
 @click.group()
 def cli():
     pass
-
-
-@click.command()
-def info():
-    print(Controller.getInstance().info())
-
-@click.command()
-@click.argument('url')
-@click.argument('remote-table')
-@click.argument('table-id')
-def remote(url, remote_table, table_id):
-    Controller.getInstance().setup_remote_connection(url, remote_table, table_id)
-    print(Controller.getInstance())
-
-@click.command()
-@click.option('-h', '--host', default='localhost')
-@click.option('-u', '--user')
-@click.option('-p', '--password')
-@click.argument('db-name')
-@click.argument('table-name')
-def local(host, user, password, db_name, table_name):
-    try:
-        Controller.getInstance().setup_local_connection(host, user, password, db_name, table_name)
-    except AttributeError as e:
-        click.echo(e)
-    except Exception:
-        print("unknown error setting up local database")
-
-@click.command()
-@click.argument('min')
-@click.argument('max')
-@click.option('-b', '--batch-size', default=10000)
-def download(min, max, batch_size):
-    Controller.getInstance().download(min, max, batch_size)
     
 @click.command()
 def init():
@@ -103,13 +69,6 @@ def run(config_file_path):
         traceback.print_exc()
         print("error in downloading")
         
-        
-
-cli.add_command(info)
-cli.add_command(local)
-cli.add_command(remote)
-cli.add_command(download)
-
 cli.add_command(init)
 cli.add_command(run)
 
