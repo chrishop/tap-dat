@@ -14,7 +14,7 @@ class TestDownloadManager(unittest.TestCase):
         )
         dm.set_batches(0, 50, 10)
         
-        expected = [[0, 9], [10, 19], [20, 29], [30, 39], [40, 49]]
+        expected = [[0, 10], [10, 20], [20, 30], [30, 40], [40, 50]]
         
         self.assertEqual(dm.query_queue, expected)
      
@@ -32,9 +32,9 @@ class TestDownloadManager(unittest.TestCase):
         result = dm.next()
         no_more_results = dm.next()
 
-        self.assertEqual(len(result), 9)
+        self.assertEqual(len(result), 10)
         self.assertEqual(result[0]['object_id'], 1)
-        self.assertEqual(result[8]['object_id'], 9)
+        self.assertEqual(result[9]['object_id'], 10)
 
         self.assertEqual([], no_more_results)
 
@@ -50,13 +50,13 @@ class TestDownloadManager(unittest.TestCase):
         more_results = dm.next()
         no_more_results = dm.next()
 
-        self.assertEqual(len(results), 9)
+        self.assertEqual(len(results), 10)
         self.assertEqual(results[0]['object_id'], 1)
-        self.assertEqual(results[8]['object_id'], 9)
+        self.assertEqual(results[9]['object_id'], 10)
 
         self.assertEqual(len(more_results), 10)
-        self.assertEqual(more_results[0]['object_id'], 10)
-        self.assertEqual(more_results[9]['object_id'], 19)
+        self.assertEqual(more_results[0]['object_id'], 11)
+        self.assertEqual(more_results[9]['object_id'], 20)
 
         self.assertEqual([], no_more_results)
 
@@ -81,26 +81,24 @@ class TestDownloadManager(unittest.TestCase):
         more_results = dm.next()
         no_more_results = dm.next()
 
-        self.assertEqual(len(results), 9)
+        self.assertEqual(len(results), 10)
         self.assertEqual(results[0]['object_id'], 1)
-        self.assertEqual(results[8]['object_id'], 9)
+        self.assertEqual(results[9]['object_id'], 10)
 
         self.assertEqual(len(more_results), 10)
-        self.assertEqual(more_results[0]['object_id'], 10)
-        self.assertEqual(more_results[9]['object_id'], 19)
+        self.assertEqual(more_results[0]['object_id'], 11)
+        self.assertEqual(more_results[9]['object_id'], 20)
 
         self.assertEqual([], no_more_results)
 
-    def test_multiple_next_with_allwise_table(self):
+    def test_next_with_allwise_table(self):
         dm = DownloadManager(
             'http://api.skymapper.nci.org.au/public/tap',
             'ext.allwise',
             'raj2000'
         )
-        dm.set_batches(0.000000, 0.000004, 0.000001)
+        dm.set_batches(0.0, 0.000001, 0.000001)
 
         results = dm.next()
-        print("RESULTS")
-        print(results)
 
-        self.assertEquals(True, False)
+        self.assertEquals(len(results), 3)

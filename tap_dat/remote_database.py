@@ -19,8 +19,10 @@ class RemoteDatabase:
     def get_batch(self, table_name: str, id_name: str,
                   min: float, max: float, columns='*') -> List[dict]:
         # could move these to statements
+        print(f"In get batch min:{min}, max{max}")
+        print(f"SELECT {columns} FROM {table_name} WHERE {id_name}>{min} AND {id_name}<={max} ORDER BY {id_name}")
         return self.query(f"SELECT {columns} FROM {table_name} \
-                           WHERE {id_name}>={min} \
+                           WHERE {id_name}>{min} \
                            AND {id_name}<={max} \
                            ORDER BY {id_name}")
 
