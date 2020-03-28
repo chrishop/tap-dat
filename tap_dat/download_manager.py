@@ -10,7 +10,6 @@ class DownloadManager:
         self.id_name = id_name
 
     def set_batches(self, the_min: float, the_max: float, batch_size: float):
-        print(the_min, the_max)
         if (((the_max - the_min)/ batch_size) % 1) != 0:
             raise ArithmeticError("batch_size must divide into the range completely")
         self.query_queue = DownloadManager.__make_query_queue(the_min,
@@ -27,7 +26,6 @@ class DownloadManager:
                                             self.id_name,
                                             a_min, a_max))
         a_min, a_max = self.query_queue.pop(0)
-        print(f"in next {a_min}, {a_max}")
         return self.remote.get_batch(self.table_name,
                                      self.id_name,
                                      a_min, a_max)

@@ -69,13 +69,6 @@ def run(config_file_path):
         traceback.print_exc()
         print("error in downloading")
         
-        
-
-cli.add_command(info)
-cli.add_command(local)
-cli.add_command(remote)
-cli.add_command(download)
-
 cli.add_command(init)
 cli.add_command(run)
 
