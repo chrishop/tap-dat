@@ -20,8 +20,14 @@ class DownloadManager:
     def next(self):
         if self.query_queue == []:
             return []
+        if self.query_queue[0][0] == 0:
+            a_min, a_max = self.query_queue.pop(0)
+            return (self.remote.get_rows_by_id(self.table_name, self.id_name, 0) + 
+                    self.remote.get_batch(self.table_name,
+                                            self.id_name,
+                                            a_min, a_max))
         a_min, a_max = self.query_queue.pop(0)
-        print(f"in next {a_min},")
+        print(f"in next {a_min}, {a_max}")
         return self.remote.get_batch(self.table_name,
                                      self.id_name,
                                      a_min, a_max)

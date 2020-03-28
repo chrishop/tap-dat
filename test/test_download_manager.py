@@ -75,19 +75,19 @@ class TestDownloadManager(unittest.TestCase):
             'dr1.dr1p1_master',
             'object_id'
         )
-        dm.set_batches(0, 20, 10)
+        dm.set_batches(10, 30, 10)
 
         results = dm.next()
         more_results = dm.next()
         no_more_results = dm.next()
 
         self.assertEqual(len(results), 10)
-        self.assertEqual(results[0]['object_id'], 1)
-        self.assertEqual(results[9]['object_id'], 10)
+        self.assertEqual(results[0]['object_id'], 11)
+        self.assertEqual(results[9]['object_id'], 20)
 
         self.assertEqual(len(more_results), 10)
-        self.assertEqual(more_results[0]['object_id'], 11)
-        self.assertEqual(more_results[9]['object_id'], 20)
+        self.assertEqual(more_results[0]['object_id'], 21)
+        self.assertEqual(more_results[9]['object_id'], 30)
 
         self.assertEqual([], no_more_results)
 
@@ -100,5 +100,23 @@ class TestDownloadManager(unittest.TestCase):
         dm.set_batches(0.0, 0.000001, 0.000001)
 
         results = dm.next()
+        no_results = dm.next()
 
         self.assertEquals(len(results), 3)
+        self.assertEquals(no_results, [])
+        
+    def test_multiple_next_with_allwise_table(self):
+        dm = DownloadManager(
+            'http://api.skymapper.nci.org.au/public/tap',
+            'ext.allwise',
+            'raj2000'
+        )
+        dm.set_batches(0.0, 0.000002, 0.000001)
+
+        results = dm.next()
+        more_results = dm.next()
+        no_results = dm.next()
+
+        self.assertEquals(len(results), 3)
+        self.assertEqual(len(more_results), 4)
+        self.assertEquals(no_results, [])

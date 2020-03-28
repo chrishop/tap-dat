@@ -44,7 +44,7 @@ class TestRemoteDatabase(unittest.TestCase):
         result = self.skymapper.get_schema('dr1.master')
 
     def test_get_batch(self):
-        result = self.skymapper.get_batch('dr1.master', 'object_id', 1, 10, 'object_id')
+        result = self.skymapper.get_batch('dr1.master', 'object_id', 0, 10, 'object_id')
 
         expected = [    {'object_id': 1},
                         {'object_id': 2},
@@ -58,3 +58,13 @@ class TestRemoteDatabase(unittest.TestCase):
                         {'object_id': 10}]
 
         self.assertEqual(result, expected)
+        
+    def test_get_rows_by_id(self):
+        results = self.skymapper.get_rows_by_id('ext.allwise', 'raj2000', 0)
+        
+        self.assertEqual(len(results), 2)
+        
+    def test_get_batch_on_allwise(self):
+        results = self.skymapper.get_batch('ext.allwise', 'raj2000', 0.0, 0.000001)
+        
+        self.assertEqual(len(results), 1)
