@@ -22,23 +22,23 @@ class TestDownloadManagerIntegration(unittest.TestCase):
     def test_single_batch_of_10_put_in_local_database(self):
         download_manager = DownloadManager('http://api.skymapper.nci.org.au/public/tap', 
                                   'dr1.master', 'object_id')
-        download_manager.set_batches(1, 10, 10)
+        download_manager.set_batches(0, 10, 10)
 
         self.local.insert_multiple('dm_integration_test',Transformer.transform(download_manager.next()))
 
         result = self.local.query('SELECT object_id FROM dm_integration_test')
 
-        for i in [i for i in range(1, 11)]:
+        for i in [i for i in range(1, 10)]:
             self.assertEqual(result[i-1][0], i)
 
     def test_5_batches_of_10_put_in_local_database(self):
         download_manager = DownloadManager('http://api.skymapper.nci.org.au/public/tap', 
                                   'dr1.master', 'object_id')
-        download_manager.set_batches(1, 50, 10)
+        download_manager.set_batches(0, 50, 10)
         for i in range(10):
             self.local.insert_multiple('dm_integration_test', Transformer.transform(download_manager.next())) # 10 times
 
         results = self.local.query('SELECT object_id FROM dm_integration_test') 
 
-        for i in [i for i in range(1, 51)]:
+        for i in [i for i in range(1, 50)]:
             self.assertEqual(results[i-1][0], i)

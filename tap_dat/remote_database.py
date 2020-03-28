@@ -17,7 +17,7 @@ class RemoteDatabase:
         self.client = TapPlus(url)
 
     def get_batch(self, table_name: str, id_name: str,
-                  min: int, max: int, columns='*') -> List[dict]:
+                  min: float, max: float, columns='*') -> List[dict]:
         # could move these to statements
         return self.query(f"SELECT {columns} FROM {table_name} \
                            WHERE {id_name}>={min} \
